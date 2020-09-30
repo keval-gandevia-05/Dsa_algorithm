@@ -2,49 +2,72 @@
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
-
-int binary_search(int a[],int n,int no) {
-    int index = -1;
-    int low = 1;
-    int high = n;
-    while(low <= high) {
-        int middle = low + (high - low) / 2;
-        if(no < a[middle])  
-            high = middle - 1;
-        else if(no > a[middle]) {
-            low = middle + 1;
+void b_sort(int *arr,int arr_len,int no_to_search)
+{
+    int middle;
+    int left=0;
+    int right=arr_len;
+    int ans_flag=0;
+    while(left<=right)
+    {
+        
+        middle=floor((left+right)/2);
+        // printf("for:%d ",arr[middle]);
+        if(arr[middle]==no_to_search)
+        {
+            ans_flag=-1;
+            printf("%d ",middle);
+            return;
         }
-        else if(no == a[middle]) {
-            index = middle;
-            break;
+        else if(no_to_search>arr[middle])
+        {
+            left=middle+1;
         }
+        else
+        {
+            right=right-1;
+        }
+        
     }
-    //printf("Returning index\n");
-    return index;
+    if(ans_flag==0)
+    {
+        printf("-1 ");
+    }
 }
-
-int main() {
-    int n,i,m,prev,no;
-    scanf("%d",&n);
-    int a[n+1];
-    for(i=1;i<=n;i++) {
-        scanf("%d",&a[i]);
-        if(i == 1) {
-            prev = a[1];
+void main()
+{
+    int no;
+    scanf("%d",&no);
+    int *arr=(int *)malloc(no*sizeof(int));
+    int prev=-1;
+    int temp;
+    int no_to_search_cnt;
+    int *no_search_array;
+    for(int i=0;i<no;i++)
+    {
+        scanf("%d",&temp);
+        if(temp>prev)
+        {
+            prev=temp;
         }
-        if(i != 1) {
-            if(prev <= a[i]) {
-                prev = a[i];
-            }
-            else if(prev > a[i]) {
-                printf("Numbers are not in ascending order\n");
-                exit(0);
-            }
+        else
+        {
+            printf("Numbers are not in ascending order");
+            exit(0);
         }
+        arr[i]=temp;
+        
     }
-    scanf("%d",&m);
-    for(i=0;i<m;i++) {
-        scanf("%d",&no);
-        printf("%d ",binary_search(a,n,no));
+    scanf("%d",&no_to_search_cnt);
+    no_search_array=(int *)malloc(no_to_search_cnt* sizeof(int));
+    for(int i=0;i<no_to_search_cnt;i++)
+    {
+        scanf("%d",&no_search_array[i]);
+
+    }
+    
+    for(int i=0;i<no_to_search_cnt;i++)
+    {
+        b_sort(arr,no,no_search_array[i]);
     }
 }
