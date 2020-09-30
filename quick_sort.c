@@ -1,64 +1,75 @@
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#define MAX1 10000
-#define MAX2 1000000
-#define MIN 1
-
-void swap(int *a,int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+#include<stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+void swap(int *i,int *j)
+{
+    int temp=*i;
+    *i=*j;
+    *j=temp;
 }
-
-void quick_sort(int a[],int lower,int upper) {
-    
-    bool flag = true;
-    if(lower < upper) {
-        int i = lower;
-        int j = upper + 1;
-        int key = a[lower];
-        while(flag) {
-            i++;
-            while(a[i] < key) 
-                i++;
-            j--;
-            while(a[j] > key)
-                j--;
-            if(i < j)
-                swap(&a[i],&a[j]);
+void quicksort(int *arr,int lb,int ub)
+{
+    if(lb<ub)
+    {
+        
+        int start=lb;
+        int end=ub;
+        int pivot=arr[lb];
+        short flag=1;
+        while(flag)
+        {
+            
+            start++;
+            while(arr[start]<pivot)
+            {
+                start++;
+            }
+            
+            while(arr[end]>pivot)
+             {
+                end--;
+            }
+            if(start<end)
+            {
+                swap(&arr[start],&arr[end]);
+            }   
             else
-                flag = false;
+            {
+                flag=0;
+            }
+        
         }
-        swap(&a[lower],&a[j]);
-        quick_sort(a,lower,j-1);
-        quick_sort(a,j+1,upper);
+        swap(&arr[lb],&arr[end]);
+        quicksort(arr,lb,end-1);
+        quicksort(arr,end+1,ub);
+        
     }
 }
-
-
-int main() {
-    int i,n;
-    scanf("%d",&n);
-    if(n < 1) {
-        printf("Size of array must be within [%d,%d]\n",MIN,MAX1);
+int main()
+{
+    
+    int no;
+    scanf("%d",&no);
+    if(no==0)
+    {
+        printf("Size of array must be within [1,10000]");
         exit(0);
     }
-    int a[n+1];
-    for(i=1;i<=n;i++) {
-        scanf("%d",&a[i]);
-        if(a[i] < 1) {
-            printf("Number must be within [%d,%d]\n",MIN,MAX2);
+    int *arr=(int*)malloc(no*sizeof(int));
+    for(int i=0;i<no;i++)
+    {
+        scanf("%d",&arr[i]);
+        if(arr[i]<0)
+        {
+            printf("Number must be within [1,1000000]");
             exit(0);
         }
-            
     }
-    quick_sort(a,1,n);
-    for(i=1;i<=n;i++)
-        printf("%d ",a[i]);
-    printf("\n");
+    quicksort(arr,0,no-1);
     
-    return 0;
+    for(int i=0;i<no;i++)
+    {
+        printf("%d ",arr[i]);
+    }
+
 }
